@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Treeline Delivery | Christmas tree delivery in MetroWest, MA</title>
-<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Delivery, setup and post-holiday curbside removal.">
+<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Delivery, plus optional post-holiday tree removal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
@@ -28,11 +28,13 @@ h1,h2,h3{line-height:1.08;margin:0 0 .6em;letter-spacing:-.02em}
 h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
 p{margin:0 0 1em;max-width:60ch}
 
+/* header */
 header{background:var(--spruce);color:var(--snow)}
 .nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem}
 .brand{font-weight:800;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
 .nav a.cta-sm{background:var(--snow);color:var(--spruce);padding:.5rem 1rem;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem}
 
+/* hero: the tree line is a jagged edge of spruce silhouettes */
 .hero{padding:3.5rem 0 7rem;position:relative}
 .hero h1{font-size:clamp(2.6rem,8vw,5.2rem);font-weight:800;max-width:14ch}
 .hero p{font-size:1.2rem;color:#cfe0d9}
@@ -43,11 +45,13 @@ header{background:var(--spruce);color:var(--snow)}
 
 section{padding:3.5rem 0}
 
+/* steps */
 .steps{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:s}
 .steps li{counter-increment:s;border-left:4px solid var(--pine);padding:.25rem 0 .25rem 1rem}
 .steps li::before{content:counter(s) ". ";font-weight:800;color:var(--pine)}
 .steps strong{display:block;font-size:1.15rem}
 
+/* packages */
 .packages{background:var(--frost)}
 .grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));margin-top:1.5rem}
 .pkg{background:var(--snow);border:2px solid var(--spruce);border-radius:.75rem;padding:1.5rem;display:flex;flex-direction:column}
@@ -58,9 +62,11 @@ section{padding:3.5rem 0}
 .tag{align-self:flex-start;background:var(--cranberry);color:#fff;border-radius:999px;font-size:.85rem;padding:.15rem .7rem;margin-bottom:.6rem;font-weight:600}
 .note{font-size:.95rem;margin-top:1.25rem}
 
+/* towns */
 .towns{display:flex;flex-wrap:wrap;gap:.6rem;padding:0;list-style:none;margin:1.25rem 0}
 .towns li{border:2px solid var(--pine);border-radius:999px;padding:.35rem 1rem;font-weight:600}
 
+/* form */
 .request{background:var(--spruce);color:var(--snow)}
 form{display:grid;gap:1rem;max-width:34rem;margin-top:1.5rem}
 label{display:grid;gap:.3rem;font-weight:600}
@@ -68,6 +74,22 @@ input,select,textarea{font:inherit;padding:.7rem .8rem;border-radius:.4rem;borde
 textarea{min-height:5rem}
 .fine{font-size:.9rem;color:#cfe0d9}
 
+
+.opts{display:grid;gap:.6rem}
+.opt{display:flex;gap:.75rem;align-items:center;background:var(--snow);color:var(--ink);border:2px solid transparent;border-radius:.5rem;padding:.7rem .9rem;font-weight:600;cursor:pointer}
+.opt:has(input:checked){border-color:var(--cranberry);background:#fff}
+.opt input{width:1.2rem;height:1.2rem;accent-color:var(--cranberry)}
+.opt span:last-child{margin-left:auto}
+.row{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr))}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:.6rem}
+legend{font-weight:600;padding:0;margin-bottom:.4rem}
+.est{background:var(--pine);border-radius:.5rem;padding:.8rem 1rem}
+.est strong{font-size:1.4rem}
+.hp{position:absolute;left:-9999px}
+.err{background:#fff;color:#8a1226;border-radius:.4rem;padding:.7rem .9rem;font-weight:600}
+.thanks{max-width:34rem;margin-top:1.5rem;background:var(--snow);color:var(--ink);border-radius:.75rem;padding:1.5rem}
+.thanks h3{font-size:1.5rem}
+[hidden]{display:none!important}
 footer{padding:2rem 0;font-size:.95rem}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -96,34 +118,29 @@ footer{padding:2rem 0;font-size:.95rem}
       <ol class="steps">
         <li><strong>Tell us what you need</strong>Send a delivery request with your town, tree size and preferred date.</li>
         <li><strong>We confirm</strong>We reply with availability, your total price and a delivery window.</li>
-        <li><strong>We deliver</strong>Your tree arrives at your door, or set up in your stand if you choose that package.</li>
+        <li><strong>We deliver</strong>Your tree arrives at your door. After Christmas, we can come back and take it away.</li>
       </ol>
     </div>
   </section>
 
-  <!-- TODO: before launch, confirm insurance with an adult before keeping "setup" and "removal" visible. -->
+  <!-- TODO: before launch, confirm insurance with an adult before offering removal (it involves coming to customers' homes). -->
   <section class="packages" id="packages">
     <div class="wrap">
-      <h2>Packages</h2>
+      <h2>Services</h2>
       <div class="grid">
         <div class="pkg">
-          <h3>Delivery</h3>
+          <h3>Tree delivery</h3>
           <div class="price">$39.99</div>
           <ul><li>Tree delivered to your door</li><li>Within our service area</li></ul>
         </div>
-        <div class="pkg">
-          <h3>Delivery + setup</h3>
-          <div class="price">$64.98</div>
-          <ul><li>Everything in Delivery</li><li>Tree placed in your stand, indoors</li></ul>
-        </div>
         <div class="pkg best">
-          <span class="tag">Most complete</span>
-          <h3>Full holiday service</h3>
-          <div class="price">$114.97</div>
-          <ul><li>Everything in Delivery + setup</li><li>Curbside removal after Christmas</li></ul>
+          <span class="tag">Add after Christmas</span>
+          <h3>Tree removal</h3>
+          <div class="price">+$49.99</div>
+          <ul><li>We come back after the holidays</li><li>We take your tree away</li></ul>
         </div>
       </div>
-      <p class="note">Prices cover the service only. The tree is priced separately, and we’ll confirm it in your quote. Removal means moving the tree to your curb; check your town’s pickup schedule.</p>
+      <p class="note">Prices cover the service only. The tree is priced separately, and we’ll confirm it in your quote. Add removal when you order, and we’ll schedule a pickup in late December or January.</p>
     </div>
   </section>
 
@@ -140,26 +157,82 @@ footer{padding:2rem 0;font-size:.95rem}
   <section class="request" id="request">
     <div class="wrap">
       <h2>Request a delivery</h2>
-      <p>Fill this out and your email app will open with the details ready to send. We’ll reply with availability and a quote. Nothing is charged until you confirm.</p>
-      <form id="reqForm">
-        <label>Your name<input name="name" required autocomplete="name"></label>
-        <label>Phone or email<input name="contact" required></label>
-        <label>Town
-          <select name="town" required>
-            <option value="">Choose a town</option>
-            <option>Wayland</option><option>Sudbury</option><option>Weston</option>
-            <option>Natick</option><option>Framingham</option><option>Wellesley</option><option>Other</option>
-          </select>
-        </label>
-        <label>Package
-          <select name="pkg" required>
-            <option>Delivery</option><option>Delivery + setup</option><option>Full holiday service</option>
-          </select>
-        </label>
-        <label>Tree size and preferred date<textarea name="details" placeholder="Example: about 7 ft, Saturday, Dec. 6"></textarea></label>
-        <button class="btn" type="submit">Send request</button>
-        <p class="fine">Or contact us directly: PHONE_NUMBER_HERE · EMAIL_HERE</p>
+      <p>Tell us what you need. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm.</p>
+      <form id="reqForm" novalidate>
+        <input type="hidden" name="_subject" value="New Treeline Delivery request">
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <fieldset>
+          <legend>1. Your service</legend>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" checked disabled><span>Tree delivery</span><span>$39.99</span></label>
+            <label class="opt"><input type="checkbox" name="removal" id="removal" value="Yes" data-price="49.99"><span>Add tree removal after Christmas</span><span>+$49.99</span></label>
+          </div>
+          <input type="hidden" name="pkg" value="Tree delivery">
+          <label id="removalWhen" hidden>When should we pick up the tree?
+            <select name="removal_window">
+              <option>Dec. 26 to 31</option><option>Jan. 1 to 7</option><option>Jan. 8 to 15</option><option>Not sure, contact me</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <div class="est" aria-live="polite">Service fee: <strong id="est">$39.99</strong><br><small>The tree is priced separately. We’ll include it in your quote.</small></div>
+
+        <fieldset>
+          <legend>2. Your tree</legend>
+          <div class="row">
+            <label>Size
+              <select name="size">
+                <option>Not sure yet</option><option>Tabletop to 4 ft</option><option>5 to 6 ft</option>
+                <option>6 to 7 ft</option><option>7 to 8 ft</option><option>8 to 9 ft</option><option>9 ft or taller</option>
+              </select>
+            </label>
+            <label>Type
+              <select name="type">
+                <option>No preference</option><option>Fraser fir</option><option>Balsam fir</option><option>Douglas fir</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. When and where</legend>
+          <div class="row">
+            <label>Preferred date<input type="date" name="date" id="date" required></label>
+            <label>Time of day
+              <select name="window"><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+            </label>
+          </div>
+          <label>Street address<input name="address" required autocomplete="street-address"></label>
+          <label>Town
+            <select name="town" required>
+              <option value="">Choose a town</option>
+              <option>Wayland</option><option>Sudbury</option><option>Weston</option>
+              <option>Natick</option><option>Framingham</option><option>Wellesley</option><option>Other</option>
+            </select>
+          </label>
+          <label>Anything we should know?<textarea name="notes" placeholder="Stairs, narrow doorway, gate code, where to put the tree"></textarea></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>4. How to reach you</legend>
+          <div class="row">
+            <label>Name<input name="name" required autocomplete="name"></label>
+            <label>Phone<input name="phone" type="tel" required autocomplete="tel"></label>
+          </div>
+          <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        </fieldset>
+
+        <div class="err" id="formError" role="alert" hidden></div>
+        <button class="btn" type="submit" id="sendBtn">Send request</button>
+        <p class="fine">Prefer to talk? Call PHONE_NUMBER_HERE or email EMAIL_HERE.</p>
       </form>
+
+      <div class="thanks" id="thanks" role="status" tabindex="-1" hidden>
+        <h3>Request received</h3>
+        <p>Thanks, <span id="thanksName">friend</span>. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm.</p>
+        <p>Questions in the meantime? Call PHONE_NUMBER_HERE.</p>
+      </div>
     </div>
   </section>
 </main>
@@ -169,18 +242,64 @@ footer{padding:2rem 0;font-size:.95rem}
 </footer>
 
 <script>
-  // Opens the visitor's email app with the request filled in. Replace EMAIL_HERE.
-  document.getElementById("reqForm").addEventListener("submit", function (e) {
+  // 1) Create a free form at formspree.io, then paste its URL below (looks like https://formspree.io/f/abcdwxyz).
+  // 2) Replace EMAIL_HERE with your business email. It is the backup if the form service isn't set up yet.
+  var FORM_ENDPOINT = "FORM_ENDPOINT_HERE";
+  var BACKUP_EMAIL = "EMAIL_HERE";
+
+  var form = document.getElementById("reqForm");
+  var est = document.getElementById("est");
+  var errBox = document.getElementById("formError");
+
+  // earliest date = today
+  var d = new Date(), pad = function (n) { return String(n).padStart(2, "0"); };
+  document.getElementById("date").min = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+
+  // live price estimate
+  form.addEventListener("change", function () {
+    var r = document.getElementById("removal");
+    var total = 39.99 + (r.checked ? Number(r.dataset.price) : 0);
+    est.textContent = "$" + total.toFixed(2);
+    document.getElementById("removalWhen").hidden = !r.checked;
+  });
+
+  function showError(msg) { errBox.textContent = msg; errBox.hidden = false; errBox.scrollIntoView({ block: "center" }); }
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var f = new FormData(e.target);
-    var body = "Name: " + f.get("name") +
-      "\nContact: " + f.get("contact") +
-      "\nTown: " + f.get("town") +
-      "\nPackage: " + f.get("pkg") +
-      "\nDetails: " + f.get("details");
-    window.location.href = "mailto:EMAIL_HERE?subject=" +
-      encodeURIComponent("Delivery request: " + f.get("town")) +
-      "&body=" + encodeURIComponent(body);
+    errBox.hidden = true;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    var data = new FormData(form);
+    if (data.get("_gotcha")) return; // spam trap
+
+    function done() {
+      form.hidden = true;
+      document.getElementById("thanksName").textContent = (data.get("name") || "").split(" ")[0] || "friend";
+      var t = document.getElementById("thanks");
+      t.hidden = false;
+      t.focus();
+    }
+
+    // Backup: opens an email if the form service isn't connected yet
+    if (FORM_ENDPOINT.indexOf("HERE") !== -1) {
+      var body = "";
+      data.forEach(function (v, k) { if (k.charAt(0) !== "_") body += k + ": " + v + "\n"; });
+      window.location.href = "mailto:" + BACKUP_EMAIL + "?subject=" +
+        encodeURIComponent("Delivery request: " + data.get("town")) + "&body=" + encodeURIComponent(body);
+      return;
+    }
+
+    var btn = document.getElementById("sendBtn");
+    btn.disabled = true; btn.textContent = "Sending...";
+    fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
+      .then(function (r) { if (r.ok) { done(); } else { throw new Error("bad response"); } })
+      .catch(function () {
+        showError("That didn’t send. Please try again, or call PHONE_NUMBER_HERE.");
+        btn.disabled = false; btn.textContent = "Send request";
+      });
   });
 </script>
 </body>
