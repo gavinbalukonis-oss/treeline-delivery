@@ -309,7 +309,7 @@ footer{padding:2rem 0;font-size:.95rem}
       <p>Tell us what you need. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm. We deliver December 9 to 23. Not in one of our towns? Send a request anyway and we’ll tell you if we can reach you.</p>
       <form id="reqForm" novalidate>
         <input type="hidden" name="_subject" value="New Treeline Delivery request">
-        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input class="hp" type="text" name="hp_confirm" tabindex="-1" autocomplete="off" readonly aria-hidden="true" data-1p-ignore data-lpignore="true">
 
         <fieldset>
           <legend>1. Your service</legend>
@@ -489,15 +489,21 @@ footer{padding:2rem 0;font-size:.95rem}
 
   function showError(msg) { errBox.textContent = msg; errBox.hidden = false; errBox.scrollIntoView({ block: "center" }); }
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  function handleSubmit(e) {
     errBox.hidden = true;
     if (!form.checkValidity()) {
-      form.reportValidity();
+      // Say which field is missing in plain sight (the browser's own pop-up is easy to miss).
+      var bad = form.querySelector("input:invalid, select:invalid, textarea:invalid");
+      var fieldNames = { slot: "Delivery day and time", address: "Street address", town: "Town", name: "Name", phone: "Phone", email: "Email" };
+      bad.focus({ preventScroll: true });
+      showError("Please complete: " + (fieldNames[bad.name] || "all required fields") + ".");
       return;
     }
     var data = new FormData(form);
-    if (data.get("_gotcha")) return; // spam trap
+    if (data.get("hp_confirm")) { // spam trap (a person never fills this hidden field)
+      showError("That didn’t send. Please call 508-314-1229.");
+      return;
+    }
 
     function done() {
       form.hidden = true;
@@ -542,6 +548,594 @@ footer{padding:2rem 0;font-size:.95rem}
       showError("That didn’t send. Please try again, or call 508-314-1229.");
       resetBtn();
     });
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    try { handleSubmit(e); }
+    catch (err) { showError("Something went wrong (" + err.message + "). Please call 508-314-1229."); }
+  });
+
+  // Size buttons set the size on the form. They stay in sync if the form dropdown is changed.
+  var sizeSelect = form.querySelector('select[name="size"]');
+  var sizeBtns = document.querySelectorAll(".size");
+  function syncSizes() {
+    sizeBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.size === sizeSelect.value ? "true" : "false");
+    });
+  }
+  sizeBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      sizeSelect.value = (b.dataset.size === sizeSelect.value) ? "Not sure yet" : b.dataset.size;
+      syncSizes();
+      // Short buzz on phones that support it (Android). iPhones ignore this.
+      if (navigator.vibrate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) navigator.vibrate(15);
+    });
+  });
+  sizeSelect.addEventListener("change", syncSizes);
+
+  // Tapping a tree picks that type on the form (the page then scrolls to the form).
+  document.querySelectorAll(".tree").forEach(function (a) {
+    a.addEventListener("click", function () {
+      form.querySelector('select[name="type"]').value = a.dataset.type;
+    });
+  });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treeline Delivery | Christmas tree delivery in MetroWest, MA</title>
+<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Delivery, plus optional post-holiday tree removal.">
+<meta name="theme-color" content="#12362c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Treeline Delivery">
+<meta property="og:title" content="Treeline Delivery | Christmas trees delivered in MetroWest">
+<meta property="og:description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Optional pickup after the holidays.">
+<!-- When you buy your domain, change both URLs below to it (for example https://treelinedelivery.com/). -->
+<meta property="og:url" content="https://treeline-delivery.vercel.app/">
+<meta property="og:image" content="https://treeline-delivery.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Treeline Delivery. Your tree, at your door.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2312362c'/%3E%3Cpolygon points='32,8 46,26 18,26' fill='%23f4f8f6'/%3E%3Cpolygon points='32,20 50,42 14,42' fill='%23f4f8f6'/%3E%3Cpolygon points='32,34 54,56 10,56' fill='%23f4f8f6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --spruce:#12362c;
+  --pine:#1f5a49;
+  --snow:#f4f8f6;
+  --frost:#dfeae5;
+  --cranberry:#b3243b;
+  --ink:#10201b;
+  --font:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--snow);line-height:1.55;font-size:1.0625rem}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cranberry);outline-offset:3px}
+.wrap{max-width:68rem;margin:0 auto;padding:0 1.25rem}
+h1,h2,h3{line-height:1.08;margin:0 0 .6em;letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
+p{margin:0 0 1em;max-width:60ch}
+
+/* header */
+header{background:var(--spruce);color:var(--snow)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem;gap:1rem}
+.brand{font-weight:800;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
+.nav{flex-wrap:wrap}
+.nav-area{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem .5rem;margin:0;padding:0;list-style:none;font-size:.9rem;flex:1 1 auto}
+.nav-area .lead{font-weight:600;color:#cfe0d9;margin-right:.2rem}
+.nav-area li:not(.lead){border:1.5px solid #4f7f6e;border-radius:999px;padding:.1rem .65rem;font-weight:600}
+@media (max-width:60rem){.nav-area{order:3;flex-basis:100%;justify-content:flex-start;padding-bottom:.25rem}}
+.nav a.cta-sm{background:var(--snow);color:var(--spruce);padding:.5rem 1rem;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem}
+
+/* hero: the tree line is a jagged edge of spruce silhouettes */
+.hero{padding:3.5rem 0 7rem;position:relative}
+.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);font-weight:800;max-width:14ch}
+.hero p{font-size:1.2rem;color:#cfe0d9}
+.btn{display:inline-block;background:var(--cranberry);color:#fff;padding:.9rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;border:0;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{background:#9a1d32}
+.treeline{position:absolute;left:0;right:0;bottom:-1px;height:70px;background:var(--snow);
+  clip-path:polygon(0 100%,0 62%,2% 62%,3.5% 18%,5% 62%,7% 62%,9% 30%,11% 62%,14% 62%,16% 6%,18% 62%,21% 62%,23% 38%,25% 62%,28% 62%,30% 14%,32% 62%,35% 62%,37% 34%,39% 62%,42% 62%,44% 8%,46% 62%,49% 62%,51% 30%,53% 62%,56% 62%,58% 16%,60% 62%,63% 62%,65% 36%,67% 62%,70% 62%,72% 10%,74% 62%,77% 62%,79% 32%,81% 62%,84% 62%,86% 14%,88% 62%,91% 62%,93% 34%,95% 62%,98% 62%,100% 40%,100% 100%)}
+
+section{padding:3.5rem 0}
+
+/* steps */
+.steps{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border-left:4px solid var(--pine);padding:.25rem 0 .25rem 1rem}
+.steps li::before{content:counter(s) ". ";font-weight:800;color:var(--pine)}
+.steps strong{display:block;font-size:1.15rem}
+
+/* packages */
+.packages{background:var(--frost)}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));margin-top:1.5rem}
+.pkg{background:var(--snow);border:2px solid var(--spruce);border-radius:.75rem;padding:1.5rem;display:flex;flex-direction:column}
+.pkg.best{background:var(--spruce);color:var(--snow)}
+.pkg h3{font-size:1.35rem;margin-bottom:.2em}
+.price{font-size:2.6rem;font-weight:800;letter-spacing:-.03em;margin:.2em 0}
+.pkg ul{padding-left:1.1rem;margin:0 0 1rem}
+.tag{align-self:flex-start;background:var(--cranberry);color:#fff;border-radius:999px;font-size:.85rem;padding:.15rem .7rem;margin-bottom:.6rem;font-weight:600}
+.note{font-size:.95rem;margin-top:1.25rem}
+
+/* tree picker */
+.trees{background:var(--snow)}
+.pick{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));margin-top:1.5rem}
+.tree{display:block;text-decoration:none;border:2px solid var(--spruce);border-radius:.75rem;background:#fff;overflow:hidden;transition:border-color .15s,transform .15s}
+.tree:hover{border-color:var(--cranberry);transform:translateY(-3px)}
+.tree .pic{position:relative;background:var(--frost);aspect-ratio:4/3;display:grid;place-items:center}
+.tree .pic svg{height:88%;width:auto}
+.tree .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tree .name{display:block;padding:.9rem 1rem .1rem;font-size:1.25rem;font-weight:800;letter-spacing:-.01em}
+.tree .desc{display:block;padding:0 1rem 1rem;font-size:.95rem}
+/* size picker */
+.sizes{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 .5rem}
+.size{font:inherit;font-weight:600;background:#fff;color:var(--ink);border:2px solid var(--spruce);border-radius:999px;padding:.45rem 1.1rem;cursor:pointer}
+.size:hover{border-color:var(--cranberry)}
+.size[aria-pressed="true"]{background:var(--spruce);color:var(--snow);border-color:var(--spruce)}
+.sizehint{font-size:.95rem;margin:0 0 1.75rem}
+.steplabel{font-weight:800;font-size:1.15rem;margin:1.5rem 0 0}
+@media (prefers-reduced-motion:reduce){.tree{transition:none}.tree:hover{transform:none}}
+
+/* who we are */
+.about-in{display:flex;flex-wrap:wrap;gap:1.75rem 2.5rem;align-items:center}
+.about-in .txt{flex:1 1 20rem}
+.about-in img{width:min(100%,15rem);aspect-ratio:1;object-fit:cover;border-radius:.75rem;border:2px solid var(--spruce)}
+
+/* faq */
+.faq{background:var(--frost)}
+.faq details{background:var(--snow);border:2px solid var(--spruce);border-radius:.6rem;margin:0 0 .75rem;max-width:44rem}
+.faq summary{cursor:pointer;font-weight:800;padding:.9rem 1rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--cranberry);font-weight:800}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{padding:0 1rem;margin:0 0 1rem}
+
+/* towns */
+.towns{display:flex;flex-wrap:wrap;gap:.6rem;padding:0;list-style:none;margin:1.25rem 0}
+.towns li{border:2px solid var(--pine);border-radius:999px;padding:.35rem 1rem;font-weight:600}
+
+/* form */
+.request{background:var(--spruce);color:var(--snow)}
+form{display:grid;gap:1rem;max-width:34rem;margin-top:1.5rem}
+label{display:grid;gap:.3rem;font-weight:600}
+input,select,textarea{font:inherit;padding:.7rem .8rem;border-radius:.4rem;border:2px solid transparent;background:var(--snow);color:var(--ink)}
+textarea{min-height:5rem}
+.fine{font-size:.9rem;color:#cfe0d9}
+.fine a,.thanks a{text-decoration:underline}
+
+
+.opts{display:grid;gap:.6rem}
+.opt{display:flex;gap:.75rem;align-items:center;background:var(--snow);color:var(--ink);border:2px solid transparent;border-radius:.5rem;padding:.7rem .9rem;font-weight:600;cursor:pointer}
+.opt:has(input:checked){border-color:var(--cranberry);background:#fff}
+.opt input{width:1.2rem;height:1.2rem;accent-color:var(--cranberry)}
+.opt span:last-child{margin-left:auto}
+.row{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr))}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:.6rem}
+legend{font-weight:600;padding:0;margin-bottom:.4rem}
+.est{background:var(--pine);border-radius:.5rem;padding:.8rem 1rem}
+.est strong{font-size:1.4rem}
+.hp{position:absolute;left:-9999px}
+.err{background:#fff;color:#8a1226;border-radius:.4rem;padding:.7rem .9rem;font-weight:600}
+.thanks{max-width:34rem;margin-top:1.5rem;background:var(--snow);color:var(--ink);border-radius:.75rem;padding:1.5rem}
+.thanks h3{font-size:1.5rem}
+[hidden]{display:none!important}
+footer{padding:2rem 0;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">Treeline Delivery</a>
+    <ul class="nav-area" aria-label="Towns we deliver to">
+      <li class="lead">We deliver to</li>
+      <li>Wayland</li><li>Sudbury</li><li>Weston</li><li>Natick</li><li>Framingham</li><li>Wellesley</li>
+    </ul>
+    <a class="cta-sm" href="#request">Request a delivery</a>
+  </div>
+  <div class="hero" id="top">
+    <div class="wrap">
+      <h1>Your tree, at your door.</h1>
+      <p>We deliver fresh Christmas trees across MetroWest, Massachusetts, so you don’t have to strap one to the roof of your car.</p>
+      <a class="btn" href="#request">Request a delivery</a>
+    </div>
+    <div class="treeline" aria-hidden="true"></div>
+  </div>
+</header>
+
+<main>
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><strong>Tell us what you need</strong>Send a delivery request with your town, tree size and a day that works.</li>
+        <li><strong>We confirm</strong>We reply with availability, your total price and a delivery window.</li>
+        <li><strong>We deliver</strong>Your tree arrives at your door. After Christmas, we can come back and take it away.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="trees" id="trees">
+    <div class="wrap">
+      <h2>Pick your tree</h2>
+      <p>Choose a size, then tap a tree to start your order. Not sure? Skip ahead and pick "No preference" or "Not sure yet" on the form, and we'll help.</p>
+      <p class="steplabel" id="sizeLabel">1. How tall?</p>
+      <div class="sizes" role="group" aria-labelledby="sizeLabel">
+        <button type="button" class="size" data-size="Tabletop to 4 ft" aria-pressed="false">Up to 4 ft</button>
+        <button type="button" class="size" data-size="5 to 6 ft" aria-pressed="false">5 to 6 ft</button>
+        <button type="button" class="size" data-size="6 to 7 ft" aria-pressed="false">6 to 7 ft</button>
+        <button type="button" class="size" data-size="7 to 8 ft" aria-pressed="false">7 to 8 ft</button>
+      </div>
+      <p class="sizehint">Tip: pick a tree about a foot shorter than your ceiling, to leave room for the stand and topper. We deliver trees up to 8 ft.</p>
+      <p class="steplabel">2. Which tree?</p>
+      <div class="pick">
+        <!-- To show a real photo, upload a file named trees/fraser.jpg (and balsam.jpg, douglas.jpg) to your repo. It appears over the drawing automatically. -->
+        <a class="tree" href="#request" data-type="Fraser fir" aria-label="Order a Fraser fir">
+          <span class="pic">
+            <svg viewBox="0 0 120 142" role="img" aria-label="Illustration of a Fraser fir" xmlns="http://www.w3.org/2000/svg">
+              <rect x="54" y="120" width="12" height="20" fill="#5b3a24"/>
+              <polygon points="60,10 90,55 30,55" fill="#17432f"/>
+              <polygon points="60,35 100,85 20,85" fill="#17432f"/>
+              <polygon points="60,65 110,122 10,122" fill="#17432f"/>
+              <polygon points="60,10 90,55 30,55" fill="#1e5a40" opacity=".55"/>
+            </svg>
+            <img src="trees/fraser.jpg" alt="Fraser fir Christmas tree" loading="lazy" onerror="this.remove()">
+          </span>
+          <span class="name">Fraser fir</span>
+          <span class="desc">Dark green with sturdy branches. Holds its needles well.</span>
+        </a>
+        <a class="tree" href="#request" data-type="Balsam fir" aria-label="Order a Balsam fir">
+          <span class="pic">
+            <svg viewBox="0 0 120 142" role="img" aria-label="Illustration of a Balsam fir" xmlns="http://www.w3.org/2000/svg">
+              <rect x="54" y="126" width="12" height="14" fill="#5b3a24"/>
+              <polygon points="60,6 80,36 40,36" fill="#2f6b57"/>
+              <polygon points="60,26 86,64 34,64" fill="#2f6b57"/>
+              <polygon points="60,52 92,96 28,96" fill="#2f6b57"/>
+              <polygon points="60,80 98,126 22,126" fill="#2f6b57"/>
+              <polygon points="60,6 80,36 40,36" fill="#3f8369" opacity=".6"/>
+            </svg>
+            <img src="trees/balsam.jpg" alt="Balsam fir Christmas tree" loading="lazy" onerror="this.remove()">
+          </span>
+          <span class="name">Balsam fir</span>
+          <span class="desc">The classic New England tree. Our most fragrant.</span>
+        </a>
+        <a class="tree" href="#request" data-type="Douglas fir" aria-label="Order a Douglas fir">
+          <span class="pic">
+            <svg viewBox="0 0 120 142" role="img" aria-label="Illustration of a Douglas fir" xmlns="http://www.w3.org/2000/svg">
+              <rect x="54" y="122" width="12" height="18" fill="#5b3a24"/>
+              <polygon points="60,8 70,30 82,28 76,48 92,50 84,68 104,72 92,90 112,96 96,112 118,122 2,122 24,112 8,96 28,90 16,72 36,68 28,50 44,48 38,28 50,30" fill="#3f8a4f"/>
+            </svg>
+            <img src="trees/douglas.jpg" alt="Douglas fir Christmas tree" loading="lazy" onerror="this.remove()">
+          </span>
+          <span class="name">Douglas fir</span>
+          <span class="desc">Soft needles and a full shape.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODO: before launch, confirm insurance with an adult before offering removal (it involves coming to customers' homes). -->
+  <section class="packages" id="packages">
+    <div class="wrap">
+      <h2>Services</h2>
+      <div class="grid">
+        <div class="pkg">
+          <h3>Tree delivery</h3>
+          <div class="price">$49.99</div>
+          <ul><li>Tree delivered to your door</li><li>Within our service area</li></ul>
+        </div>
+        <div class="pkg best">
+          <span class="tag">Add after Christmas</span>
+          <h3>Tree removal</h3>
+          <div class="price">+$49.99</div>
+          <ul><li>We come back after the holidays</li><li>We take your tree away</li></ul>
+        </div>
+      </div>
+      <p class="note">Prices cover the service only. The tree is priced separately, and we’ll confirm it in your quote. Add removal when you order, and we’ll schedule a pickup in late December or January.</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <h2>Who we are</h2>
+      <div class="about-in">
+        <!-- To show a photo of you two, upload about.jpg (a square photo works best) to the top level of your repo. It appears here automatically. -->
+        <img src="about.jpg" alt="The Treeline Delivery team" loading="lazy" onerror="this.remove()">
+        <div class="txt">
+          <p>Treeline Delivery is a small, local, two-young-entrepreneur team based in Wayland. We bring your tree to your door, and if you add removal, we come back after the holidays to take it away.</p>
+          <p>From your first message to drop-off, you will have the same two people. If you have questions at any point, call or text <a href="tel:+15083141229">508-314-1229</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <h2>Questions</h2>
+      <details>
+        <summary>How does payment work?</summary>
+        <p>Nothing is charged when you send a request. We reply with your total (the tree plus delivery), and you confirm it. We’ll tell you how to pay in that message.</p>
+      </details>
+      <details>
+        <summary>What if nobody is home?</summary>
+        <p>Use the notes box on the form to tell us where to leave the tree, such as the porch, garage or beside the door. We’ll message you when we arrive. If we can’t reach you and there’s no place to leave it, we’ll reschedule.</p>
+      </details>
+      <details>
+        <summary>What if my tree isn’t available?</summary>
+        <p>We confirm availability before anything is charged. If the size or type you picked is sold out, we’ll offer the closest match. If it doesn’t suit you, you can cancel at no cost.</p>
+      </details>
+      <details>
+        <summary>How does removal work?</summary>
+        <p>Add it when you order and choose a pickup window. Before we come, please take off all lights, ornaments and tinsel. We’ll message you the day before with a time, then haul the tree away.</p>
+      </details>
+      <details>
+        <summary>Can I pick a delivery time?</summary>
+        <p>Yes. The form lists the days and time windows we have open. Pick one, and we’ll confirm it in our reply.</p>
+      </details>
+      <details>
+        <summary>How big a tree can you deliver?</summary>
+        <p>Up to 8 feet. Pick a tree about a foot shorter than your ceiling to leave room for the stand and topper.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="request" id="request">
+    <div class="wrap">
+      <h2>Request a delivery</h2>
+      <p>Tell us what you need. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm. We deliver December 9 to 23. Not in one of our towns? Send a request anyway and we’ll tell you if we can reach you.</p>
+      <form id="reqForm" novalidate>
+        <input type="hidden" name="_subject" value="New Treeline Delivery request">
+        <input class="hp" type="text" name="hp_confirm" tabindex="-1" autocomplete="off" readonly aria-hidden="true" data-1p-ignore data-lpignore="true">
+
+        <fieldset>
+          <legend>1. Your service</legend>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" checked disabled><span>Tree delivery</span><span>$49.99</span></label>
+            <label class="opt"><input type="checkbox" name="removal" id="removal" value="Yes" data-price="49.99"><span>Add tree removal after Christmas</span><span>+$49.99</span></label>
+          </div>
+          <input type="hidden" name="pkg" value="Tree delivery">
+          <label id="removalWhen" hidden>When should we pick up the tree?
+            <select name="removal_window">
+              <option>Dec. 26 to 31</option><option>Jan. 1 to 7</option><option>Jan. 8 to 15</option><option>Not sure, contact me</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <div class="est" aria-live="polite">Service fee: <strong id="est">$49.99</strong><br><small>The tree is priced separately. We’ll include it in your quote.</small></div>
+
+        <fieldset>
+          <legend>2. Your tree</legend>
+          <div class="row">
+            <label>Size
+              <select name="size">
+                <option>Not sure yet</option><option>Tabletop to 4 ft</option><option>5 to 6 ft</option>
+                <option>6 to 7 ft</option><option>7 to 8 ft</option>
+              </select>
+            </label>
+            <label>Type
+              <select name="type">
+                <option>No preference</option><option>Fraser fir</option><option>Balsam fir</option><option>Douglas fir</option>
+              </select>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. When and where</legend>
+          <label>Delivery day and time
+            <select name="slot" id="slot" required>
+              <option value="">Choose a day and time</option>
+            </select>
+          </label>
+          <p class="fine">Late-afternoon slots can fall after dark in December, so a porch light helps.</p>
+          <label>Street address<input name="address" required autocomplete="street-address"></label>
+          <label>Town
+            <select name="town" required>
+              <option value="">Choose a town</option>
+              <option>Wayland</option><option>Sudbury</option><option>Weston</option>
+              <option>Natick</option><option>Framingham</option><option>Wellesley</option><option>Other</option>
+            </select>
+          </label>
+          <label>Anything we should know?<textarea name="notes" placeholder="Stairs, narrow doorway, gate code, where to put the tree"></textarea></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>4. How to reach you</legend>
+          <div class="row">
+            <label>Name<input name="name" required autocomplete="name"></label>
+            <label>Phone<input name="phone" type="tel" required autocomplete="tel"></label>
+          </div>
+          <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        </fieldset>
+
+        <div class="err" id="formError" role="alert" hidden></div>
+        <button class="btn" type="submit" id="sendBtn">Send request</button>
+        <p class="fine">Prefer to talk? Call <a href="tel:+15083141229">508-314-1229</a> or email <a href="mailto:gavinbalukonis2@gmail.com">gavinbalukonis2@gmail.com</a>.</p>
+      </form>
+
+      <div class="thanks" id="thanks" role="status" tabindex="-1" hidden>
+        <h3>Request received</h3>
+        <p>Thanks, <span id="thanksName">friend</span>. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm.</p>
+        <p>Questions in the meantime? Call <a href="tel:+15083141229">508-314-1229</a>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Treeline Delivery. Serving MetroWest, Massachusetts.</div>
+</footer>
+
+<script>
+  // Orders go to Formspree. If it is ever unavailable, the form falls back to opening an email to BACKUP_EMAIL.
+  var FORM_ENDPOINT = "https://formspree.io/f/xkjrjqqk";
+  var BACKUP_EMAIL = "gavinbalukonis2@gmail.com";
+
+  var form = document.getElementById("reqForm");
+  var est = document.getElementById("est");
+  var errBox = document.getElementById("formError");
+
+  // ---- Delivery days and times. Edit this list to open or close days. ----
+  // Each line is a date ("YYYY-MM-DD") and the time windows offered that day.
+  var WEEKEND = ["morning", "afternoon"];
+  var SLOTS = [
+    ["2026-12-09", ["3 to 5 pm"]],
+    ["2026-12-12", WEEKEND],
+    ["2026-12-13", WEEKEND],
+    ["2026-12-14", ["4 to 6 pm"]],
+    ["2026-12-16", ["3 to 5 pm"]],
+    ["2026-12-19", WEEKEND],
+    ["2026-12-20", WEEKEND],
+    ["2026-12-21", ["4 to 6 pm"]],
+    ["2026-12-23", ["3 to 5 pm"]]
+  ];
+  var LEAD_DAYS = 2; // a day stops being offered this many days before it happens
+
+  // How many deliveries you will take in each window. A window disappears from the form when it is full.
+  var CAPACITY = { "morning": 3, "afternoon": 3, "3 to 5 pm": 2, "4 to 6 pm": 2 };
+
+  // Paste your Google Apps Script web app URL here (see the setup steps). Leave it as is to turn slot-blocking off.
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbzqitqOHKkmYuWriCkg2H_ogkfNw4jxt-lu11bdpSUcuuBmdkaDQqVJiHgIUTLmbI5K/exec";
+  var SHEET_ON = SHEET_URL.indexOf("PASTE") === -1;
+
+  var DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var NOT_SURE = "Not sure, contact me";
+  var slotSel = document.getElementById("slot");
+  var cutoff = new Date(); cutoff.setHours(0, 0, 0, 0); cutoff.setDate(cutoff.getDate() + LEAD_DAYS);
+
+  // Rebuilds the day-and-time list, leaving out anything past, too soon, or full.
+  function buildSlots(counts) {
+    var keep = slotSel.value;
+    slotSel.length = 1;
+    slotSel.options[0].textContent = "Choose a day and time";
+    var offered = 0;
+    SLOTS.forEach(function (s) {
+      var p = s[0].split("-"), day = new Date(+p[0], +p[1] - 1, +p[2]);
+      if (day < cutoff) return;
+      s[1].forEach(function (t) {
+        var label = DAY_NAMES[day.getDay()] + ", " + MONTH_NAMES[day.getMonth()] + " " + day.getDate() + ", " + t;
+        if ((counts[label] || 0) >= (CAPACITY[t] || 1)) return;
+        var o = document.createElement("option");
+        o.textContent = label;
+        slotSel.appendChild(o);
+        offered++;
+      });
+    });
+    var other = document.createElement("option");
+    other.textContent = NOT_SURE;
+    slotSel.appendChild(other);
+    if (!offered) slotSel.options[0].textContent = "No open days right now. Choose the last option.";
+    for (var i = 0; i < slotSel.options.length; i++) {
+      if (keep && slotSel.options[i].textContent === keep) slotSel.selectedIndex = i;
+    }
+  }
+
+  // Asks the Google Sheet how many requests each slot has. Resolves to null if it can't be reached.
+  function getCounts() {
+    if (!SHEET_ON) return Promise.resolve({});
+    var ctl = new AbortController(), timer = setTimeout(function () { ctl.abort(); }, 5000);
+    return fetch(SHEET_URL + "?action=counts&t=" + Date.now(), { signal: ctl.signal })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { clearTimeout(timer); return j.counts || {}; })
+      .catch(function () { clearTimeout(timer); return null; });
+  }
+
+  // Saves the request as a row in the Google Sheet. Never blocks or breaks the order if it fails.
+  function logToSheet(data) {
+    if (!SHEET_ON) return Promise.resolve();
+    var body = new URLSearchParams();
+    data.forEach(function (v, k) { body.append(k, v); });
+    return Promise.race([
+      fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: body, keepalive: true }),
+      new Promise(function (resolve) { setTimeout(resolve, 4000); })
+    ]).catch(function () {});
+  }
+
+  buildSlots({});
+  getCounts().then(function (counts) { if (counts) buildSlots(counts); });
+
+  // live price estimate
+  form.addEventListener("change", function () {
+    var r = document.getElementById("removal");
+    var total = 49.99 + (r.checked ? Number(r.dataset.price) : 0);
+    est.textContent = "$" + total.toFixed(2);
+    document.getElementById("removalWhen").hidden = !r.checked;
+  });
+
+  function showError(msg) { errBox.textContent = msg; errBox.hidden = false; errBox.scrollIntoView({ block: "center" }); }
+
+  function handleSubmit(e) {
+    errBox.hidden = true;
+    if (!form.checkValidity()) {
+      // Say which field is missing in plain sight (the browser's own pop-up is easy to miss).
+      var bad = form.querySelector("input:invalid, select:invalid, textarea:invalid");
+      var fieldNames = { slot: "Delivery day and time", address: "Street address", town: "Town", name: "Name", phone: "Phone", email: "Email" };
+      bad.focus({ preventScroll: true });
+      showError("Please complete: " + (fieldNames[bad.name] || "all required fields") + ".");
+      return;
+    }
+    var data = new FormData(form);
+    if (data.get("hp_confirm")) { // spam trap (a person never fills this hidden field)
+      showError("That didn’t send. Please call 508-314-1229.");
+      return;
+    }
+
+    function done() {
+      form.hidden = true;
+      document.getElementById("thanksName").textContent = (data.get("name") || "").split(" ")[0] || "friend";
+      var t = document.getElementById("thanks");
+      t.hidden = false;
+      t.focus();
+    }
+
+    // Backup: opens an email if the form service isn't connected yet
+    if (FORM_ENDPOINT.indexOf("HERE") !== -1) {
+      var body = "";
+      data.forEach(function (v, k) { if (k.charAt(0) !== "_") body += k + ": " + v + "\n"; });
+      window.location.href = "mailto:" + BACKUP_EMAIL + "?subject=" +
+        encodeURIComponent("Delivery request: " + data.get("town")) + "&body=" + encodeURIComponent(body);
+      return;
+    }
+
+    var btn = document.getElementById("sendBtn");
+    btn.disabled = true; btn.textContent = "Sending...";
+    function resetBtn() { btn.disabled = false; btn.textContent = "Send request"; }
+
+    // Check the slot is still open, send the order, then record it in the Sheet.
+    getCounts().then(function (counts) {
+      var chosen = data.get("slot");
+      if (counts && chosen !== NOT_SURE) {
+        var windowName = chosen.split(", ").pop();
+        if ((counts[chosen] || 0) >= (CAPACITY[windowName] || 1)) {
+          buildSlots(counts);
+          showError("Sorry, that time was just taken. Please choose another.");
+          resetBtn();
+          return;
+        }
+      }
+      return fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
+        .then(function (r) {
+          if (!r.ok) throw new Error("bad response");
+          return logToSheet(data);
+        })
+        .then(done);
+    }).catch(function () {
+      showError("That didn’t send. Please try again, or call 508-314-1229.");
+      resetBtn();
+    });
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    try { handleSubmit(e); }
+    catch (err) { showError("Something went wrong (" + err.message + "). Please call 508-314-1229."); }
   });
 
   // Size buttons set the size on the form. They stay in sync if the form dropdown is changed.
