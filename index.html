@@ -215,7 +215,7 @@ footer a{color:#f3ead0}
       <ul class="pills">
         <li>Delivery $49.99</li>
         <li>Removal after Christmas +$49.99</li>
-        <li>Delivering Dec 9 to 23</li>
+        <li>Delivering Dec 4 to 23</li>
       </ul>
     </div>
     <div class="treeline back" aria-hidden="true"></div>
@@ -487,6 +487,8 @@ footer a{color:#f3ead0}
   // Each line is a date ("YYYY-MM-DD") and the time windows offered that day.
   var WEEKEND = ["morning", "afternoon"];
   var SLOTS = [
+    ["2026-12-04", ["4 to 7 pm"]],
+    ["2026-12-08", ["4 to 6 pm"]],
     ["2026-12-09", ["3 to 5 pm"]],
     ["2026-12-10", ["4 to 6:30 pm"]],
     ["2026-12-11", ["4 to 6:30 pm"]],
@@ -503,8 +505,8 @@ footer a{color:#f3ead0}
   ];
   var LEAD_DAYS = 2; // a day stops being offered this many days before it happens
 
-  // How many deliveries you will take in each window. A window disappears from the form when it is full.
-  var CAPACITY = { "morning": 3, "afternoon": 3, "3 to 5 pm": 2, "4 to 6:30 pm": 2 };
+  // How many deliveries you will take in each window. A window disappears from the form only when it is full.
+  var CAPACITY = { "morning": 3, "afternoon": 4, "3 to 5 pm": 3, "4 to 6 pm": 3, "4 to 6:30 pm": 3, "4 to 7 pm": 4 };
 
   // Your Google Apps Script web app URL (it counts requests per slot). Leave "PASTE" in it to turn slot-blocking off.
   var SHEET_URL = "https://script.google.com/macros/s/AKfycbzqitqOHKkmYuWriCkg2H_ogkfNw4jxt-lu11bdpSUcuuBmdkaDQqVJiHgIUTLmbI5K/exec";
