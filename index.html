@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treeline Delivery | Christmas tree delivery in MetroWest, MA</title>
+<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Delivery, setup and post-holiday curbside removal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --spruce:#12362c;
+  --pine:#1f5a49;
+  --snow:#f4f8f6;
+  --frost:#dfeae5;
+  --cranberry:#b3243b;
+  --ink:#10201b;
+  --font:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--snow);line-height:1.55;font-size:1.0625rem}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cranberry);outline-offset:3px}
+.wrap{max-width:68rem;margin:0 auto;padding:0 1.25rem}
+h1,h2,h3{line-height:1.08;margin:0 0 .6em;letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800}
+p{margin:0 0 1em;max-width:60ch}
+
+header{background:var(--spruce);color:var(--snow)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem}
+.brand{font-weight:800;font-size:1.25rem;text-decoration:none;letter-spacing:-.01em}
+.nav a.cta-sm{background:var(--snow);color:var(--spruce);padding:.5rem 1rem;border-radius:999px;font-weight:600;text-decoration:none;font-size:.95rem}
+
+.hero{padding:3.5rem 0 7rem;position:relative}
+.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);font-weight:800;max-width:14ch}
+.hero p{font-size:1.2rem;color:#cfe0d9}
+.btn{display:inline-block;background:var(--cranberry);color:#fff;padding:.9rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;border:0;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{background:#9a1d32}
+.treeline{position:absolute;left:0;right:0;bottom:-1px;height:70px;background:var(--snow);
+  clip-path:polygon(0 100%,0 62%,2% 62%,3.5% 18%,5% 62%,7% 62%,9% 30%,11% 62%,14% 62%,16% 6%,18% 62%,21% 62%,23% 38%,25% 62%,28% 62%,30% 14%,32% 62%,35% 62%,37% 34%,39% 62%,42% 62%,44% 8%,46% 62%,49% 62%,51% 30%,53% 62%,56% 62%,58% 16%,60% 62%,63% 62%,65% 36%,67% 62%,70% 62%,72% 10%,74% 62%,77% 62%,79% 32%,81% 62%,84% 62%,86% 14%,88% 62%,91% 62%,93% 34%,95% 62%,98% 62%,100% 40%,100% 100%)}
+
+section{padding:3.5rem 0}
+
+.steps{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));margin:1.5rem 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border-left:4px solid var(--pine);padding:.25rem 0 .25rem 1rem}
+.steps li::before{content:counter(s) ". ";font-weight:800;color:var(--pine)}
+.steps strong{display:block;font-size:1.15rem}
+
+.packages{background:var(--frost)}
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));margin-top:1.5rem}
+.pkg{background:var(--snow);border:2px solid var(--spruce);border-radius:.75rem;padding:1.5rem;display:flex;flex-direction:column}
+.pkg.best{background:var(--spruce);color:var(--snow)}
+.pkg h3{font-size:1.35rem;margin-bottom:.2em}
+.price{font-size:2.6rem;font-weight:800;letter-spacing:-.03em;margin:.2em 0}
+.pkg ul{padding-left:1.1rem;margin:0 0 1rem}
+.tag{align-self:flex-start;background:var(--cranberry);color:#fff;border-radius:999px;font-size:.85rem;padding:.15rem .7rem;margin-bottom:.6rem;font-weight:600}
+.note{font-size:.95rem;margin-top:1.25rem}
+
+.towns{display:flex;flex-wrap:wrap;gap:.6rem;padding:0;list-style:none;margin:1.25rem 0}
+.towns li{border:2px solid var(--pine);border-radius:999px;padding:.35rem 1rem;font-weight:600}
+
+.request{background:var(--spruce);color:var(--snow)}
+form{display:grid;gap:1rem;max-width:34rem;margin-top:1.5rem}
+label{display:grid;gap:.3rem;font-weight:600}
+input,select,textarea{font:inherit;padding:.7rem .8rem;border-radius:.4rem;border:2px solid transparent;background:var(--snow);color:var(--ink)}
+textarea{min-height:5rem}
+.fine{font-size:.9rem;color:#cfe0d9}
+
+footer{padding:2rem 0;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">Treeline Delivery</a>
+    <a class="cta-sm" href="#request">Request a delivery</a>
+  </div>
+  <div class="hero" id="top">
+    <div class="wrap">
+      <h1>Your tree, at your door.</h1>
+      <p>We deliver fresh Christmas trees across MetroWest, Massachusetts, so you don’t have to strap one to the roof of your car.</p>
+      <a class="btn" href="#request">Request a delivery</a>
+    </div>
+    <div class="treeline" aria-hidden="true"></div>
+  </div>
+</header>
+
+<main>
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><strong>Tell us what you need</strong>Send a delivery request with your town, tree size and preferred date.</li>
+        <li><strong>We confirm</strong>We reply with availability, your total price and a delivery window.</li>
+        <li><strong>We deliver</strong>Your tree arrives at your door, or set up in your stand if you choose that package.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- TODO: before launch, confirm insurance with an adult before keeping "setup" and "removal" visible. -->
+  <section class="packages" id="packages">
+    <div class="wrap">
+      <h2>Packages</h2>
+      <div class="grid">
+        <div class="pkg">
+          <h3>Delivery</h3>
+          <div class="price">$39.99</div>
+          <ul><li>Tree delivered to your door</li><li>Within our service area</li></ul>
+        </div>
+        <div class="pkg">
+          <h3>Delivery + setup</h3>
+          <div class="price">$64.98</div>
+          <ul><li>Everything in Delivery</li><li>Tree placed in your stand, indoors</li></ul>
+        </div>
+        <div class="pkg best">
+          <span class="tag">Most complete</span>
+          <h3>Full holiday service</h3>
+          <div class="price">$114.97</div>
+          <ul><li>Everything in Delivery + setup</li><li>Curbside removal after Christmas</li></ul>
+        </div>
+      </div>
+      <p class="note">Prices cover the service only. The tree is priced separately, and we’ll confirm it in your quote. Removal means moving the tree to your curb; check your town’s pickup schedule.</p>
+    </div>
+  </section>
+
+  <section id="area">
+    <div class="wrap">
+      <h2>Where we deliver</h2>
+      <ul class="towns">
+        <li>Wayland</li><li>Sudbury</li><li>Weston</li><li>Natick</li><li>Framingham</li><li>Wellesley</li>
+      </ul>
+      <p>Not on the list? Send a request anyway and we’ll tell you if we can reach you.</p>
+    </div>
+  </section>
+
+  <section class="request" id="request">
+    <div class="wrap">
+      <h2>Request a delivery</h2>
+      <p>Fill this out and your email app will open with the details ready to send. We’ll reply with availability and a quote. Nothing is charged until you confirm.</p>
+      <form id="reqForm">
+        <label>Your name<input name="name" required autocomplete="name"></label>
+        <label>Phone or email<input name="contact" required></label>
+        <label>Town
+          <select name="town" required>
+            <option value="">Choose a town</option>
+            <option>Wayland</option><option>Sudbury</option><option>Weston</option>
+            <option>Natick</option><option>Framingham</option><option>Wellesley</option><option>Other</option>
+          </select>
+        </label>
+        <label>Package
+          <select name="pkg" required>
+            <option>Delivery</option><option>Delivery + setup</option><option>Full holiday service</option>
+          </select>
+        </label>
+        <label>Tree size and preferred date<textarea name="details" placeholder="Example: about 7 ft, Saturday, Dec. 6"></textarea></label>
+        <button class="btn" type="submit">Send request</button>
+        <p class="fine">Or contact us directly: PHONE_NUMBER_HERE · EMAIL_HERE</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Treeline Delivery. Serving MetroWest, Massachusetts.</div>
+</footer>
+
+<script>
+  // Opens the visitor's email app with the request filled in. Replace EMAIL_HERE.
+  document.getElementById("reqForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = new FormData(e.target);
+    var body = "Name: " + f.get("name") +
+      "\nContact: " + f.get("contact") +
+      "\nTown: " + f.get("town") +
+      "\nPackage: " + f.get("pkg") +
+      "\nDetails: " + f.get("details");
+    window.location.href = "mailto:EMAIL_HERE?subject=" +
+      encodeURIComponent("Delivery request: " + f.get("town")) +
+      "&body=" + encodeURIComponent(body);
+  });
+</script>
+</body>
+</html>
