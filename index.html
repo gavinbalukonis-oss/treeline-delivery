@@ -172,7 +172,7 @@ footer{padding:2rem 0;font-size:.95rem}
     <div class="wrap">
       <h2>How it works</h2>
       <ol class="steps">
-        <li><strong>Tell us what you need</strong>Send a delivery request with your town, tree size and preferred date.</li>
+        <li><strong>Tell us what you need</strong>Send a delivery request with your town, tree size and a day that works.</li>
         <li><strong>We confirm</strong>We reply with availability, your total price and a delivery window.</li>
         <li><strong>We deliver</strong>Your tree arrives at your door. After Christmas, we can come back and take it away.</li>
       </ol>
@@ -294,7 +294,7 @@ footer{padding:2rem 0;font-size:.95rem}
       </details>
       <details>
         <summary>Can I pick a delivery time?</summary>
-        <p>Choose a date and morning, afternoon or evening on the form. We’ll confirm a delivery window in our reply.</p>
+        <p>Yes. The form lists the days and time windows we have open. Pick one, and we’ll confirm it in our reply.</p>
       </details>
       <details>
         <summary>How big a tree can you deliver?</summary>
@@ -306,7 +306,7 @@ footer{padding:2rem 0;font-size:.95rem}
   <section class="request" id="request">
     <div class="wrap">
       <h2>Request a delivery</h2>
-      <p>Tell us what you need. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm. Not in one of our towns? Send a request anyway and we’ll tell you if we can reach you.</p>
+      <p>Tell us what you need. We’ll reply within 24 hours with availability and your total price. Nothing is charged until you confirm. We deliver December 9 to 23. Not in one of our towns? Send a request anyway and we’ll tell you if we can reach you.</p>
       <form id="reqForm" novalidate>
         <input type="hidden" name="_subject" value="New Treeline Delivery request">
         <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -346,12 +346,12 @@ footer{padding:2rem 0;font-size:.95rem}
 
         <fieldset>
           <legend>3. When and where</legend>
-          <div class="row">
-            <label>Preferred date<input type="date" name="date" id="date" required></label>
-            <label>Time of day
-              <select name="window"><option>Any time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
-            </label>
-          </div>
+          <label>Delivery day and time
+            <select name="slot" id="slot" required>
+              <option value="">Choose a day and time</option>
+            </select>
+          </label>
+          <p class="fine">Late-afternoon slots can fall after dark in December, so a porch light helps.</p>
           <label>Street address<input name="address" required autocomplete="street-address"></label>
           <label>Town
             <select name="town" required>
@@ -399,9 +399,85 @@ footer{padding:2rem 0;font-size:.95rem}
   var est = document.getElementById("est");
   var errBox = document.getElementById("formError");
 
-  // earliest date = today
-  var d = new Date(), pad = function (n) { return String(n).padStart(2, "0"); };
-  document.getElementById("date").min = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  // ---- Delivery days and times. Edit this list to open or close days. ----
+  // Each line is a date ("YYYY-MM-DD") and the time windows offered that day.
+  var WEEKEND = ["morning", "afternoon"];
+  var SLOTS = [
+    ["2026-12-09", ["3 to 5 pm"]],
+    ["2026-12-12", WEEKEND],
+    ["2026-12-13", WEEKEND],
+    ["2026-12-14", ["4 to 6 pm"]],
+    ["2026-12-16", ["3 to 5 pm"]],
+    ["2026-12-19", WEEKEND],
+    ["2026-12-20", WEEKEND],
+    ["2026-12-21", ["4 to 6 pm"]],
+    ["2026-12-23", ["3 to 5 pm"]]
+  ];
+  var LEAD_DAYS = 2; // a day stops being offered this many days before it happens
+
+  // How many deliveries you will take in each window. A window disappears from the form when it is full.
+  var CAPACITY = { "morning": 3, "afternoon": 3, "3 to 5 pm": 2, "4 to 6 pm": 2 };
+
+  // Paste your Google Apps Script web app URL here (see the setup steps). Leave it as is to turn slot-blocking off.
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbzqitqOHKkmYuWriCkg2H_ogkfNw4jxt-lu11bdpSUcuuBmdkaDQqVJiHgIUTLmbI5K/exec";
+  var SHEET_ON = SHEET_URL.indexOf("PASTE") === -1;
+
+  var DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var NOT_SURE = "Not sure, contact me";
+  var slotSel = document.getElementById("slot");
+  var cutoff = new Date(); cutoff.setHours(0, 0, 0, 0); cutoff.setDate(cutoff.getDate() + LEAD_DAYS);
+
+  // Rebuilds the day-and-time list, leaving out anything past, too soon, or full.
+  function buildSlots(counts) {
+    var keep = slotSel.value;
+    slotSel.length = 1;
+    slotSel.options[0].textContent = "Choose a day and time";
+    var offered = 0;
+    SLOTS.forEach(function (s) {
+      var p = s[0].split("-"), day = new Date(+p[0], +p[1] - 1, +p[2]);
+      if (day < cutoff) return;
+      s[1].forEach(function (t) {
+        var label = DAY_NAMES[day.getDay()] + ", " + MONTH_NAMES[day.getMonth()] + " " + day.getDate() + ", " + t;
+        if ((counts[label] || 0) >= (CAPACITY[t] || 1)) return;
+        var o = document.createElement("option");
+        o.textContent = label;
+        slotSel.appendChild(o);
+        offered++;
+      });
+    });
+    var other = document.createElement("option");
+    other.textContent = NOT_SURE;
+    slotSel.appendChild(other);
+    if (!offered) slotSel.options[0].textContent = "No open days right now. Choose the last option.";
+    for (var i = 0; i < slotSel.options.length; i++) {
+      if (keep && slotSel.options[i].textContent === keep) slotSel.selectedIndex = i;
+    }
+  }
+
+  // Asks the Google Sheet how many requests each slot has. Resolves to null if it can't be reached.
+  function getCounts() {
+    if (!SHEET_ON) return Promise.resolve({});
+    var ctl = new AbortController(), timer = setTimeout(function () { ctl.abort(); }, 5000);
+    return fetch(SHEET_URL + "?action=counts&t=" + Date.now(), { signal: ctl.signal })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { clearTimeout(timer); return j.counts || {}; })
+      .catch(function () { clearTimeout(timer); return null; });
+  }
+
+  // Saves the request as a row in the Google Sheet. Never blocks or breaks the order if it fails.
+  function logToSheet(data) {
+    if (!SHEET_ON) return Promise.resolve();
+    var body = new URLSearchParams();
+    data.forEach(function (v, k) { body.append(k, v); });
+    return Promise.race([
+      fetch(SHEET_URL, { method: "POST", mode: "no-cors", body: body, keepalive: true }),
+      new Promise(function (resolve) { setTimeout(resolve, 4000); })
+    ]).catch(function () {});
+  }
+
+  buildSlots({});
+  getCounts().then(function (counts) { if (counts) buildSlots(counts); });
 
   // live price estimate
   form.addEventListener("change", function () {
@@ -442,12 +518,30 @@ footer{padding:2rem 0;font-size:.95rem}
 
     var btn = document.getElementById("sendBtn");
     btn.disabled = true; btn.textContent = "Sending...";
-    fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
-      .then(function (r) { if (r.ok) { done(); } else { throw new Error("bad response"); } })
-      .catch(function () {
-        showError("That didn’t send. Please try again, or call 508-314-1229.");
-        btn.disabled = false; btn.textContent = "Send request";
-      });
+    function resetBtn() { btn.disabled = false; btn.textContent = "Send request"; }
+
+    // Check the slot is still open, send the order, then record it in the Sheet.
+    getCounts().then(function (counts) {
+      var chosen = data.get("slot");
+      if (counts && chosen !== NOT_SURE) {
+        var windowName = chosen.split(", ").pop();
+        if ((counts[chosen] || 0) >= (CAPACITY[windowName] || 1)) {
+          buildSlots(counts);
+          showError("Sorry, that time was just taken. Please choose another.");
+          resetBtn();
+          return;
+        }
+      }
+      return fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
+        .then(function (r) {
+          if (!r.ok) throw new Error("bad response");
+          return logToSheet(data);
+        })
+        .then(done);
+    }).catch(function () {
+      showError("That didn’t send. Please try again, or call 508-314-1229.");
+      resetBtn();
+    });
   });
 
   // Size buttons set the size on the form. They stay in sync if the form dropdown is changed.
