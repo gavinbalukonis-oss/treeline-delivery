@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Treeline Delivery | Christmas tree delivery in MetroWest, MA</title>
-<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Delivery, plus optional post-holiday tree removal.">
+<meta name="description" content="Fresh Christmas trees delivered to your door in Wayland, Sudbury, Weston, Natick, Framingham and Wellesley. Fraser and balsam fir trees, delivered, with optional post-holiday tree removal.">
 <meta name="theme-color" content="#0f3a2e">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Treeline Delivery">
@@ -188,6 +188,29 @@ footer a{color:#f3ead0}
 .stickybar.off{transform:translateY(150%);opacity:0;pointer-events:none}
 @media (min-width:60rem){.stickybar{display:none}}
 @media (max-width:59.99rem){footer{padding-bottom:5.5rem}}
+.chip span{flex-direction:column;align-items:flex-start;justify-content:center;gap:.1rem}
+.chip span .cp{display:block;font-weight:600;font-size:.8rem;color:var(--muted)}
+.chip:has(input:checked) span .cp{color:#d3e2da}
+.pricebar{position:sticky;bottom:.75rem;z-index:10;margin:1.25rem 0 0;background:var(--evergreen);color:var(--cream);border-radius:.8rem;padding:.7rem 1rem;box-shadow:0 8px 24px rgba(15,58,46,.35)}
+.pb-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.pb-label{font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ecd48f}
+.pb-total{font-family:var(--serif);font-weight:700;font-size:1.35rem}
+.pb-detail{font-size:.85rem;color:#d3e2da;margin-top:.1rem}
+.pricebar.pulse{animation:pb-pulse .5s ease}
+@keyframes pb-pulse{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pricebar.pulse{animation:none}}
+.estimate{background:var(--cream);border:1px solid var(--gold-soft);border-radius:.8rem;padding:.8rem 1rem;margin-top:.25rem;font-weight:700}
+.estimate small{display:block;font-weight:400;color:var(--muted);margin-top:.15rem}
+.subhead{font-size:1.35rem;margin:2rem 0 .75rem}
+.ptable-wrap{overflow-x:auto;max-width:36rem}
+.ptable{border-collapse:collapse;width:100%;background:var(--paper);border:1px solid var(--gold);border-radius:.7rem;overflow:hidden}
+.ptable th,.ptable td{text-align:left;padding:.7rem 1rem;border-top:1px solid var(--gold-soft)}
+.ptable thead th{background:var(--evergreen);color:var(--cream);font-size:.9rem;border-top:0}
+.ptable tbody th{font-family:var(--serif);font-weight:700}
+.example{display:grid;gap:.2rem;background:var(--paper);border:1px dashed var(--gold);border-radius:.7rem;padding:.8rem 1rem;max-width:36rem;margin:1rem 0}
+.example strong{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--berry)}
+fieldset.home{margin:0 0 1rem}
+.policy-line{margin-top:.75rem}
 .preview-ribbon{background:#fff3cd;color:#5c4400;text-align:center;font-weight:700;font-size:.9rem;padding:.4rem 1rem}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tcard,.stickybar,.tcard .tick{transition:none}}
 </style>
@@ -252,18 +275,17 @@ footer a{color:#f3ead0}
               <legend>How tall?</legend>
               <div class="chips">
                 <label class="chip"><input class="vh" type="radio" name="size" value="Not sure yet" checked><span>Not sure yet</span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="Tabletop to 4 ft"><span>Up to 4 ft</span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="5 to 6 ft"><span>5 to 6 ft</span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="6 to 7 ft"><span>6 to 7 ft</span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="7 to 8 ft"><span>7 to 8 ft</span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="5 to 6 ft"><span>5 to 6 ft<small class="cp"></small></span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="6 to 7 ft"><span>6 to 7 ft<small class="cp"></small></span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="7 to 8 ft"><span>7 to 8 ft<small class="cp"></small></span></label>
               </div>
-              <p class="hint">Tip: pick a tree about a foot shorter than your ceiling, to leave room for the stand and topper. We deliver trees up to 8 ft.</p>
+              <p class="hint">Tip: pick a tree about a foot shorter than your ceiling, to leave room for the stand and topper. We deliver trees from 5 to 8 ft.</p>
             </fieldset>
 
             <fieldset>
               <legend>Which kind?</legend>
               <div class="tcards">
-                <!-- To show a real photo, upload trees/fraser.jpg (and balsam.jpg, douglas.jpg) to your repo. It appears over the drawing automatically. -->
+                <!-- To show a real photo, upload trees/fraser.jpg and trees/balsam.jpg to your repo. It appears over the drawing automatically. -->
                 <label class="tcard">
                   <input class="vh" type="radio" name="type" value="Fraser fir">
                   <span class="pic">
@@ -277,7 +299,7 @@ footer a{color:#f3ead0}
                     <img src="trees/fraser.jpg" alt="Fraser fir Christmas tree" loading="lazy" onerror="this.remove()">
                   </span>
                   <span class="tname">Fraser fir</span>
-                  <span class="tdesc">Dark green with sturdy branches. Holds its needles well.</span>
+                  <span class="tdesc">Dark green with sturdy branches. Holds its needles well. A little pricier.</span>
                   <span class="tick" aria-hidden="true">&#10003;</span>
                 </label>
                 <label class="tcard">
@@ -294,25 +316,14 @@ footer a{color:#f3ead0}
                     <img src="trees/balsam.jpg" alt="Balsam fir Christmas tree" loading="lazy" onerror="this.remove()">
                   </span>
                   <span class="tname">Balsam fir</span>
-                  <span class="tdesc">The classic New England tree. Our most fragrant.</span>
-                  <span class="tick" aria-hidden="true">&#10003;</span>
-                </label>
-                <label class="tcard">
-                  <input class="vh" type="radio" name="type" value="Douglas fir">
-                  <span class="pic">
-                    <svg viewBox="0 0 120 142" role="img" aria-label="Illustration of a Douglas fir" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="54" y="122" width="12" height="18" fill="#5b3a24"/>
-                      <polygon points="60,8 70,30 82,28 76,48 92,50 84,68 104,72 92,90 112,96 96,112 118,122 2,122 24,112 8,96 28,90 16,72 36,68 28,50 44,48 38,28 50,30" fill="#3f8a4f"/>
-                    </svg>
-                    <img src="trees/douglas.jpg" alt="Douglas fir Christmas tree" loading="lazy" onerror="this.remove()">
-                  </span>
-                  <span class="tname">Douglas fir</span>
-                  <span class="tdesc">Soft needles and a full shape.</span>
+                  <span class="tdesc">The classic New England tree. The most fragrant.</span>
                   <span class="tick" aria-hidden="true">&#10003;</span>
                 </label>
               </div>
               <label class="chip wide"><input class="vh" type="radio" name="type" value="No preference" checked><span>No preference. Choose a good one for me</span></label>
             </fieldset>
+
+            <div class="estimate" id="estimate" aria-live="polite"></div>
           </div>
 
           <!-- Step 2: day -->
@@ -328,7 +339,7 @@ footer a{color:#f3ead0}
               <legend>Add-on</legend>
               <label class="addcard">
                 <input type="checkbox" name="removal" id="removal" value="Yes" data-price="49.99">
-                <span class="abody"><strong>Tree removal after Christmas</strong><small>We come back after the holidays and take it away.</small></span>
+                <span class="abody"><strong>Tree removal after Christmas</strong><small>Leave it outside by your door and we’ll pick it up after the holidays.</small></span>
                 <span class="aprice">+$49.99</span>
               </label>
               <fieldset class="inner" id="removalWhen" disabled hidden>
@@ -360,6 +371,15 @@ footer a{color:#f3ead0}
                 <option>Natick</option><option>Framingham</option><option>Wellesley</option><option>Other</option>
               </select>
             </label>
+            <fieldset class="home">
+              <legend>Will someone be home when we deliver?</legend>
+              <div class="chips">
+                <label class="chip"><input class="vh" type="radio" name="home" value="Yes, someone will be home" checked><span>Yes</span></label>
+                <label class="chip"><input class="vh" type="radio" name="home" value="No, leave it where I say in the notes"><span>No, leave it outside</span></label>
+                <label class="chip"><input class="vh" type="radio" name="home" value="Not sure yet"><span>Not sure</span></label>
+              </div>
+              <p class="hint">Being home helps: a freshly cut tree lasts longer once it is inside and in water.</p>
+            </fieldset>
             <label class="f">Anything we should know?<textarea name="notes" placeholder="Stairs, narrow doorway, gate code, where to put the tree"></textarea></label>
           </div>
 
@@ -368,6 +388,11 @@ footer a{color:#f3ead0}
             <button class="btn ghost" type="button" id="backBtn" hidden>Back</button>
             <button class="btn" type="button" id="nextBtn">Next: choose a day</button>
             <button class="btn" type="submit" id="sendBtn" hidden>Send request</button>
+          </div>
+          <p class="fine policy-line">By sending a request you agree to our <a href="#policy">delivery policy</a>: you get what you ordered, and once a tree is delivered as ordered the sale is final.</p>
+          <div class="pricebar" id="pricebar" aria-live="polite" hidden>
+            <div class="pb-top"><span class="pb-label">Your estimate</span><span class="pb-total" id="pbTotal"></span></div>
+            <div class="pb-detail" id="pbDetail"></div>
           </div>
           <p class="fine">Prefer to talk? Call <a href="tel:+15083141229">508-314-1229</a> or email <a href="mailto:gavinbalukonis2@gmail.com">gavinbalukonis2@gmail.com</a>.</p>
         </form>
@@ -388,7 +413,7 @@ footer a{color:#f3ead0}
       <ol class="steps3">
         <li><strong>Tell us what you need</strong>Choose a tree, a day and your address. It takes about a minute.</li>
         <li><strong>We confirm</strong>We reply with availability, your total price and a delivery window.</li>
-        <li><strong>We deliver</strong>Your tree arrives at your door. After Christmas, we can come back and take it away.</li>
+        <li><strong>We deliver</strong>Your tree arrives at your door. After Christmas, leave it outside and we can pick it up.</li>
       </ol>
     </div>
   </section>
@@ -402,16 +427,32 @@ footer a{color:#f3ead0}
         <div class="pkg">
           <h3>Tree delivery</h3>
           <div class="price">$49.99</div>
-          <ul><li>Tree delivered to your door</li><li>Within our service area</li></ul>
+          <ul><li>Your tree delivered to your door</li><li>Within our service area</li><li>Tree priced separately (see below)</li></ul>
         </div>
         <div class="pkg best">
           <span class="tag">Add after Christmas</span>
           <h3>Tree removal</h3>
           <div class="price">+$49.99</div>
-          <ul><li>We come back after the holidays</li><li>We take your tree away</li></ul>
+          <ul><li>Leave your tree outside by your door</li><li>We pick it up after the holidays</li></ul>
         </div>
       </div>
-      <p class="note">Prices cover the service only. The tree is priced separately, and we’ll confirm it in your quote. Add removal when you order, and we’ll schedule a pickup in late December or January.</p>
+      <h3 class="subhead">Trees</h3>
+      <div class="ptable-wrap">
+        <table class="ptable">
+          <thead><tr><th scope="col">Size</th><th scope="col">Balsam fir</th><th scope="col">Fraser fir</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">5 to 6 ft</th><td>about $60 to $70</td><td>about $60 to $70</td></tr>
+            <tr><th scope="row">6 to 7 ft</th><td>about $80</td><td>about $90</td></tr>
+            <tr><th scope="row">7 to 8 ft</th><td>about $95</td><td>about $98</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Tree prices are estimates, and we confirm the exact price in your quote. Massachusetts sales tax (6.25%) is added to the tree price where it applies. Delivery and removal are separate flat fees.</p>
+      <div class="example">
+        <strong>Example</strong>
+        <span>6 to 7 ft Fraser fir about $90.00, plus sales tax on the tree about $5.63, plus delivery $49.99 = about <b>$145.62</b>.</span>
+      </div>
+      <p class="note">Removal is outside pickup only: you leave the tree outside, and we never come inside. Add removal when you order, and we’ll schedule a pickup in late December or January.</p>
     </div>
   </section>
 
@@ -421,10 +462,10 @@ footer a{color:#f3ead0}
       <h2>Who we are</h2>
       <div class="about-in">
         <!-- To show a photo of you two, upload about.jpg (a square photo works best) to the top level of your repo. It appears here automatically. -->
-        <img src="about.jpg" alt="The Treeline Delivery team" loading="lazy" onerror="this.remove()">
+        <img src="about.jpg" alt="Treeline Delivery" loading="lazy" onerror="this.remove()">
         <div class="txt">
-          <p>Treeline Delivery is a small, local, two-young-entrepreneur team based in Wayland. We bring your tree to your door, and if you add removal, we come back after the holidays to take it away.</p>
-          <p>From your first message to drop-off, you will have the same two people. If you have questions at any point, call or text <a href="tel:+15083141229">508-314-1229</a>.</p>
+          <p>Treeline Delivery is a small, local, student-run business based in Wayland. Our trees come from a local Massachusetts garden center. We bring your tree to your door, and if you add removal, we pick it up from outside your door after the holidays.</p>
+          <p>From your first message to drop-off, you will deal with the same person. If you have questions at any point, call or text <a href="tel:+15083141229">508-314-1229</a>.</p>
         </div>
       </div>
     </div>
@@ -436,7 +477,7 @@ footer a{color:#f3ead0}
       <h2>Questions</h2>
       <details>
         <summary>How does payment work?</summary>
-        <p>Nothing is charged when you send a request. We reply with your total (the tree plus delivery), and you confirm it. We’ll tell you how to pay in that message.</p>
+        <p>Nothing is charged when you send a request. We reply with your itemized total (the tree, 6.25% Massachusetts sales tax where it applies, delivery, and removal if you added it) and a secure link to pay by card. Your delivery day is held once you pay.</p>
       </details>
       <details>
         <summary>What if nobody is home?</summary>
@@ -448,7 +489,12 @@ footer a{color:#f3ead0}
       </details>
       <details>
         <summary>How does removal work?</summary>
-        <p>Add it when you order and choose a pickup window. Before we come, please take off all lights, ornaments and tinsel. We’ll message you the day before with a time, then haul the tree away.</p>
+        <p>Add it when you order and choose a pickup window. Before we come, please take off all lights, ornaments and tinsel, and leave the tree outside by your door. We pick up from outside only and never come inside. We’ll message you the day before, then haul the tree away.</p>
+      </details>
+      <details id="policy">
+        <summary>What is your delivery policy?</summary>
+        <p>When you order, you choose the size and type, and we deliver what you ordered. Please check your tree when it arrives. If it isn’t what you ordered, such as the wrong size or type, contact us within 24 hours with a photo and we’ll review it.</p>
+        <p>Trees are cut and sold as is, and no two are exactly alike. We can’t replace or refund a tree because of a change of mind, or its shape or look, once it has been delivered as ordered. You can change or cancel your order before we buy your tree, and we’ll confirm that when we send your total.</p>
       </details>
       <details>
         <summary>Can I pick a delivery time?</summary>
@@ -456,7 +502,7 @@ footer a{color:#f3ead0}
       </details>
       <details>
         <summary>How big a tree can you deliver?</summary>
-        <p>Up to 8 feet. Pick a tree about a foot shorter than your ceiling to leave room for the stand and topper.</p>
+        <p>From 5 to 8 feet. Pick a tree about a foot shorter than your ceiling to leave room for the stand and topper.</p>
       </details>
       <details>
         <summary>Not in one of your towns?</summary>
@@ -505,7 +551,7 @@ footer a{color:#f3ead0}
   ];
   var LEAD_DAYS = 2; // a day stops being offered this many days before it happens
 
-  // How many deliveries you will take in each window. A window disappears from the form only when it is full.
+  // How many deliveries you will take in each window. A window disappears from the form when it is full.
   var CAPACITY = { "morning": 3, "afternoon": 4, "3 to 5 pm": 3, "4 to 6 pm": 3, "4 to 6:30 pm": 3, "4 to 7 pm": 4 };
 
   // Your Google Apps Script web app URL (it counts requests per slot). Leave "PASTE" in it to turn slot-blocking off.
@@ -615,6 +661,58 @@ footer a{color:#f3ead0}
     return c ? c.value : "";
   }
 
+  // ---- Estimated tree prices (edit these when the supplier confirms exact prices) ----
+  var TAX = 0.0625; // Massachusetts sales tax, added to the tree price. Delivery is not taxed here until the DOR confirms.
+  var PRICES = {
+    "5 to 6 ft": { "Balsam fir": 60, "Fraser fir": 70 },
+    "6 to 7 ft": { "Balsam fir": 80, "Fraser fir": 90 },
+    "7 to 8 ft": { "Balsam fir": 95, "Fraser fir": 98 }
+  };
+  function money(n) { return "$" + n.toFixed(2); }
+  function treeRange(size, type) {
+    var sizes = PRICES[size] ? [size] : Object.keys(PRICES);
+    var kinds = (type === "Balsam fir" || type === "Fraser fir") ? [type] : ["Balsam fir", "Fraser fir"];
+    var lo = Infinity, hi = 0;
+    sizes.forEach(function (sz) { kinds.forEach(function (k) {
+      var p = PRICES[sz][k];
+      // the 5 to 6 ft trees are quoted as a $60 to $70 range for both types
+      var a = (sz === "5 to 6 ft") ? 60 : p, b = (sz === "5 to 6 ft") ? 70 : p;
+      if (a < lo) lo = a; if (b > hi) hi = b;
+    }); });
+    return [lo, hi];
+  }
+  function estimateText() {
+    var size = checkedVal("size"), type = checkedVal("type");
+    var r = treeRange(size, type);
+    var fee = 49.99 + (rem.checked ? Number(rem.dataset.price) : 0);
+    function tot(t) { return Math.round(t * (1 + TAX) * 100) / 100 + fee; }
+    var tree = r[0] === r[1] ? "about " + money(r[0]) : "about " + money(r[0]) + " to " + money(r[1]);
+    var total = r[0] === r[1] ? "about " + money(tot(r[0])) : "about " + money(tot(r[0])) + " to " + money(tot(r[1]));
+    return { tree: tree, total: total };
+  }
+  function renderEstimate() {
+    var box = document.getElementById("estimate");
+    var e = estimateText();
+    box.textContent = "";
+    box.appendChild(document.createTextNode("Estimated tree price: " + e.tree));
+    box.appendChild(el("small", null, "Plus 6.25% sales tax on the tree where it applies, and $49.99 delivery. We confirm the exact price in your quote."));
+    // prices shown on each size button for the tree type chosen
+    var type = checkedVal("type");
+    document.querySelectorAll('input[name="size"]').forEach(function (inp) {
+      var cp = inp.parentNode.querySelector(".cp");
+      if (!cp || !PRICES[inp.value]) return;
+      var r = treeRange(inp.value, type);
+      cp.textContent = r[0] === r[1] ? "about " + money(r[0]).replace(".00", "") : "about " + money(r[0]).replace(".00", "") + " to " + money(r[1]).replace(".00", "");
+    });
+    // running total bar, visible on every step
+    var bar2 = document.getElementById("pricebar");
+    var rem2 = rem.checked ? " + $" + Number(rem.dataset.price).toFixed(2) + " removal" : "";
+    document.getElementById("pbTotal").textContent = e.total;
+    document.getElementById("pbDetail").textContent = "Tree " + e.tree + " + 6.25% tax on the tree + $49.99 delivery" + rem2;
+    bar2.hidden = false;
+    if (!reduced) { bar2.classList.remove("pulse"); void bar2.offsetWidth; bar2.classList.add("pulse"); }
+  }
+
   function renderSummary() {
     var box = document.getElementById("summary");
     box.textContent = "";
@@ -627,10 +725,13 @@ footer a{color:#f3ead0}
       box.appendChild(r);
     }
     var type = checkedVal("type"), size = checkedVal("size");
-    row("Tree", (type === "No preference" ? "Any tree" : type) + ", " + (size === "Not sure yet" ? "size to be confirmed" : size), 1);
+    row("Choice", (type === "No preference" ? "Any tree" : type) + ", " + (size === "Not sure yet" ? "size to be confirmed" : size), 1);
     row("Day", checkedVal("slot"), 2);
     if (rem.checked) row("Removal", "After Christmas, " + checkedVal("removal_window") + " (+$" + price.toFixed(2) + ")", 2);
-    row("Service fee", "$" + total.toFixed(2) + ". The tree is priced separately, in your quote.");
+    var e = estimateText();
+    row("Tree", e.tree + " (confirmed in your quote)");
+    row("Service fee", "$" + total.toFixed(2));
+    row("Est. total", e.total + ", with 6.25% sales tax on the tree where it applies");
   }
 
   function show(n, scroll) {
@@ -677,6 +778,7 @@ footer a{color:#f3ead0}
     if (e.target === rem) syncRemoval();
     // Short buzz on phones that support it (Android). iPhones ignore this.
     if (e.target.name === "size" && navigator.vibrate && !reduced) navigator.vibrate(15);
+    if (e.target.name === "size" || e.target.name === "type" || e.target === rem) renderEstimate();
   });
 
   // ---- Sending ----
@@ -687,6 +789,7 @@ footer a{color:#f3ead0}
       if (bad) { if (n !== step) show(n, false); reportInvalid(bad); return; }
     }
     var data = new FormData(form);
+    data.set("notes", "Home at delivery: " + (data.get("home") || "") + (data.get("notes") ? ". " + data.get("notes") : ""));
     if (data.get("hp_confirm")) { // spam trap (a person never fills this hidden field)
       showError("That didn’t send. Please call 508-314-1229.");
       return;
@@ -752,6 +855,8 @@ footer a{color:#f3ead0}
 
   // ---- Start ----
   syncRemoval();
+  renderEstimate();
+  document.getElementById("pricebar").classList.remove("pulse");
   buildSlots({});
   show(1, false);
   getCounts().then(function (counts) { if (counts) buildSlots(counts); });
