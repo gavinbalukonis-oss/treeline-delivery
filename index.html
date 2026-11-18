@@ -188,9 +188,6 @@ footer a{color:#f3ead0}
 .stickybar.off{transform:translateY(150%);opacity:0;pointer-events:none}
 @media (min-width:60rem){.stickybar{display:none}}
 @media (max-width:59.99rem){footer{padding-bottom:5.5rem}}
-.chip span{flex-direction:column;align-items:flex-start;justify-content:center;gap:.1rem}
-.chip span .cp{display:block;font-weight:600;font-size:.8rem;color:var(--muted)}
-.chip:has(input:checked) span .cp{color:#d3e2da}
 .pricebar{position:sticky;bottom:.75rem;z-index:10;margin:1.25rem 0 0;background:var(--evergreen);color:var(--cream);border-radius:.8rem;padding:.7rem 1rem;box-shadow:0 8px 24px rgba(15,58,46,.35)}
 .pb-top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
 .pb-label{font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ecd48f}
@@ -199,8 +196,6 @@ footer a{color:#f3ead0}
 .pricebar.pulse{animation:pb-pulse .5s ease}
 @keyframes pb-pulse{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.pricebar.pulse{animation:none}}
-.estimate{background:var(--cream);border:1px solid var(--gold-soft);border-radius:.8rem;padding:.8rem 1rem;margin-top:.25rem;font-weight:700}
-.estimate small{display:block;font-weight:400;color:var(--muted);margin-top:.15rem}
 .subhead{font-size:1.35rem;margin:2rem 0 .75rem}
 .ptable-wrap{overflow-x:auto;max-width:36rem}
 .ptable{border-collapse:collapse;width:100%;background:var(--paper);border:1px solid var(--gold);border-radius:.7rem;overflow:hidden}
@@ -275,9 +270,9 @@ fieldset.home{margin:0 0 1rem}
               <legend>How tall?</legend>
               <div class="chips">
                 <label class="chip"><input class="vh" type="radio" name="size" value="Not sure yet" checked><span>Not sure yet</span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="5 to 6 ft"><span>5 to 6 ft<small class="cp"></small></span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="6 to 7 ft"><span>6 to 7 ft<small class="cp"></small></span></label>
-                <label class="chip"><input class="vh" type="radio" name="size" value="7 to 8 ft"><span>7 to 8 ft<small class="cp"></small></span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="5 to 6 ft"><span>5 to 6 ft</span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="6 to 7 ft"><span>6 to 7 ft</span></label>
+                <label class="chip"><input class="vh" type="radio" name="size" value="7 to 8 ft"><span>7 to 8 ft</span></label>
               </div>
               <p class="hint">Tip: pick a tree about a foot shorter than your ceiling, to leave room for the stand and topper. We deliver trees from 5 to 8 ft.</p>
             </fieldset>
@@ -322,8 +317,6 @@ fieldset.home{margin:0 0 1rem}
               </div>
               <label class="chip wide"><input class="vh" type="radio" name="type" value="No preference" checked><span>No preference. Choose a good one for me</span></label>
             </fieldset>
-
-            <div class="estimate" id="estimate" aria-live="polite"></div>
           </div>
 
           <!-- Step 2: day -->
@@ -664,51 +657,29 @@ fieldset.home{margin:0 0 1rem}
   // ---- Estimated tree prices (edit these when the supplier confirms exact prices) ----
   var TAX = 0.0625; // Massachusetts sales tax, added to the tree price. Delivery is not taxed here until the DOR confirms.
   var PRICES = {
-    "5 to 6 ft": { "Balsam fir": 60, "Fraser fir": 70 },
+    "5 to 6 ft": { "Balsam fir": 65, "Fraser fir": 65 },
     "6 to 7 ft": { "Balsam fir": 80, "Fraser fir": 90 },
     "7 to 8 ft": { "Balsam fir": 95, "Fraser fir": 98 }
   };
   function money(n) { return "$" + n.toFixed(2); }
-  function treeRange(size, type) {
-    var sizes = PRICES[size] ? [size] : Object.keys(PRICES);
-    var kinds = (type === "Balsam fir" || type === "Fraser fir") ? [type] : ["Balsam fir", "Fraser fir"];
-    var lo = Infinity, hi = 0;
-    sizes.forEach(function (sz) { kinds.forEach(function (k) {
-      var p = PRICES[sz][k];
-      // the 5 to 6 ft trees are quoted as a $60 to $70 range for both types
-      var a = (sz === "5 to 6 ft") ? 60 : p, b = (sz === "5 to 6 ft") ? 70 : p;
-      if (a < lo) lo = a; if (b > hi) hi = b;
-    }); });
-    return [lo, hi];
-  }
+  // Returns null until the customer has picked BOTH a tree type and a size.
   function estimateText() {
     var size = checkedVal("size"), type = checkedVal("type");
-    var r = treeRange(size, type);
+    if (!PRICES[size] || !PRICES[size][type]) return null;
+    var tree = PRICES[size][type];
+    var tax = Math.round(tree * TAX * 100) / 100;
     var fee = 49.99 + (rem.checked ? Number(rem.dataset.price) : 0);
-    function tot(t) { return Math.round(t * (1 + TAX) * 100) / 100 + fee; }
-    var tree = r[0] === r[1] ? "about " + money(r[0]) : "about " + money(r[0]) + " to " + money(r[1]);
-    var total = r[0] === r[1] ? "about " + money(tot(r[0])) : "about " + money(tot(r[0])) + " to " + money(tot(r[1]));
-    return { tree: tree, total: total };
+    return { tree: tree, tax: tax, fee: fee, total: tree + tax + fee };
   }
+  // The price pop-up: hidden until both a tree and a size are chosen, then it follows the customer through the steps.
   function renderEstimate() {
-    var box = document.getElementById("estimate");
-    var e = estimateText();
-    box.textContent = "";
-    box.appendChild(document.createTextNode("Estimated tree price: " + e.tree));
-    box.appendChild(el("small", null, "Plus 6.25% sales tax on the tree where it applies, and $49.99 delivery. We confirm the exact price in your quote."));
-    // prices shown on each size button for the tree type chosen
-    var type = checkedVal("type");
-    document.querySelectorAll('input[name="size"]').forEach(function (inp) {
-      var cp = inp.parentNode.querySelector(".cp");
-      if (!cp || !PRICES[inp.value]) return;
-      var r = treeRange(inp.value, type);
-      cp.textContent = r[0] === r[1] ? "about " + money(r[0]).replace(".00", "") : "about " + money(r[0]).replace(".00", "") + " to " + money(r[1]).replace(".00", "");
-    });
-    // running total bar, visible on every step
     var bar2 = document.getElementById("pricebar");
-    var rem2 = rem.checked ? " + $" + Number(rem.dataset.price).toFixed(2) + " removal" : "";
-    document.getElementById("pbTotal").textContent = e.total;
-    document.getElementById("pbDetail").textContent = "Tree " + e.tree + " + 6.25% tax on the tree + $49.99 delivery" + rem2;
+    var e = estimateText();
+    if (!e) { bar2.hidden = true; return; }
+    var wasHidden = bar2.hidden;
+    document.getElementById("pbTotal").textContent = "about " + money(e.total);
+    document.getElementById("pbDetail").textContent = "Tree about " + money(e.tree) + " + " + money(e.tax) + " tax + $49.99 delivery" +
+      (rem.checked ? " + $" + Number(rem.dataset.price).toFixed(2) + " removal" : "");
     bar2.hidden = false;
     if (!reduced) { bar2.classList.remove("pulse"); void bar2.offsetWidth; bar2.classList.add("pulse"); }
   }
@@ -729,9 +700,14 @@ fieldset.home{margin:0 0 1rem}
     row("Day", checkedVal("slot"), 2);
     if (rem.checked) row("Removal", "After Christmas, " + checkedVal("removal_window") + " (+$" + price.toFixed(2) + ")", 2);
     var e = estimateText();
-    row("Tree", e.tree + " (confirmed in your quote)");
-    row("Service fee", "$" + total.toFixed(2));
-    row("Est. total", e.total + ", with 6.25% sales tax on the tree where it applies");
+    if (e) {
+      row("Tree", "about " + money(e.tree) + " (confirmed in your quote)");
+      row("Tax", "about " + money(e.tax) + " (6.25% on the tree, where it applies)");
+      row(rem.checked ? "Fees" : "Delivery", "$" + total.toFixed(2) + (rem.checked ? " (delivery + removal)" : ""));
+      row("Est. total", "about " + money(e.total));
+    } else {
+      row("Price", "Your tree price and total are confirmed in your quote. Delivery is $" + total.toFixed(2) + ".");
+    }
   }
 
   function show(n, scroll) {
@@ -856,7 +832,6 @@ fieldset.home{margin:0 0 1rem}
   // ---- Start ----
   syncRemoval();
   renderEstimate();
-  document.getElementById("pricebar").classList.remove("pulse");
   buildSlots({});
   show(1, false);
   getCounts().then(function (counts) { if (counts) buildSlots(counts); });
